@@ -199,6 +199,10 @@ export function getAlpha2(alpha3) {
 }
 
 export function getFlagUrl(alpha3, format = 'svg', pngWidth = 40) {
+  if (alpha3 === 'EUR') return `https://flagcdn.com/eu.svg`;
+  if (alpha3 === 'NAT') return `https://upload.wikimedia.org/wikipedia/commons/3/37/Flag_of_NATO.svg`;
+  if (alpha3 === 'BRC') return `https://upload.wikimedia.org/wikipedia/commons/b/b8/BRICS_logo.svg`;
+
   const a2 = ALPHA3_TO_ALPHA2[alpha3];
   if (!a2) return null;
 

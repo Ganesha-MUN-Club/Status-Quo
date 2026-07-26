@@ -820,10 +820,6 @@ const REGIONS = {
         "name": "Papua New Guinea"
       },
       {
-        "code": "WSM",
-        "name": "Samoa"
-      },
-      {
         "code": "SLB",
         "name": "Solomon Islands"
       },
@@ -834,6 +830,33 @@ const REGIONS = {
       {
         "code": "VUT",
         "name": "Vanuatu"
+      },
+      {
+        "code": "WSM",
+        "name": "Samoa"
+      }
+    ]
+  },
+  "alliances": {
+    "name": "Alliances",
+    "rotation": [
+      -10,
+      -35,
+      0
+    ],
+    "scale": 1.1,
+    "countries": [
+      {
+        "code": "EUR",
+        "name": "European Union"
+      },
+      {
+        "code": "NAT",
+        "name": "NATO"
+      },
+      {
+        "code": "BRC",
+        "name": "BRICS"
       }
     ]
   }

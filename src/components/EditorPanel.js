@@ -311,7 +311,7 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
                     <div className="affected-empty-readonly">No relations specified.</div>
                   ) : null}
                   
-                  {!readOnly && (
+                  {!readOnly && (!item.affected || item.affected.length < 4) && (
                     <select
                       className="add-affected-select"
                       value=""
