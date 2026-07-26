@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import REGIONS from '@/lib/regions';
+import REGIONS, { ALLIANCES } from '@/lib/regions';
 import CALLOUT_COLORS from '@/lib/colors';
 import { NEWS_SOURCES } from '@/lib/newsSources';
 import { getFlagUrl } from '@/lib/flags';
@@ -52,9 +52,9 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
     }));
   };
 
-  // Compile full sorted list of all countries in the world for relationship mapping
+  // Compile full sorted list of all countries & alliances in the world for relationship mapping
   const allWorldCountries = useMemo(() => {
-    const list = [];
+    const list = [...ALLIANCES];
     Object.values(REGIONS).forEach((r) => {
       r.countries.forEach((c) => {
         if (!list.some((existing) => existing.code === c.code)) {

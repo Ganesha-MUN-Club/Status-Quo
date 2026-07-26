@@ -836,31 +836,23 @@ const REGIONS = {
         "name": "Samoa"
       }
     ]
-  },
-  "alliances": {
-    "name": "Alliances",
-    "rotation": [
-      -10,
-      -35,
-      0
-    ],
-    "scale": 1.1,
-    "countries": [
-      {
-        "code": "EUR",
-        "name": "European Union"
-      },
-      {
-        "code": "NAT",
-        "name": "NATO"
-      },
-      {
-        "code": "BRC",
-        "name": "BRICS"
-      }
-    ]
   }
 };
+
+export const ALLIANCES = [
+  {
+    "code": "EUR",
+    "name": "European Union"
+  },
+  {
+    "code": "NAT",
+    "name": "NATO"
+  },
+  {
+    "code": "BRC",
+    "name": "BRICS"
+  }
+];
 
 export const REGION_KEYS = Object.keys(REGIONS);
 export default REGIONS;
