@@ -523,10 +523,10 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
             y1={item.centroidY}
             x2={item.adjX + (draggedOffsets[item.countryCode]?.dx || 0) + 80} // Center of 160px wide box + drag offset
             y2={item.adjY + (draggedOffsets[item.countryCode]?.dy || 0) + ((item.height || 44) / 2)} // Vertical center of box + drag offset
-            stroke="#888888" // Neutral colored connecting lines
-            strokeWidth={hoveredCountry === item.countryCode ? 1.8 : 1.2}
+            stroke="#000000" // Black connecting lines
+            strokeWidth={hoveredCountry === item.countryCode ? 2.5 : 1.8}
             fill="none"
-            opacity={hoveredCountry === item.countryCode ? 0.8 : 0.4}
+            opacity={hoveredCountry === item.countryCode ? 1.0 : 0.7}
             style={{ transition: 'stroke-width 150ms ease, opacity 150ms ease' }}
           />
         ))}
@@ -541,8 +541,8 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
             style={{
               left: item.centroidX,
               top: item.centroidY,
-              color: '#888888', // Neutral centroid dots
-              backgroundColor: '#888888', // Neutral centroid dots
+              color: '#000000', // Black centroid dots
+              backgroundColor: '#000000', // Black centroid dots
               transform: `translate(-50%, -50%) scale(${hoveredCountry === item.countryCode ? 1.3 : 1})`,
             }}
           />
