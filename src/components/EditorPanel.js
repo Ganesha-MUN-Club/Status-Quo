@@ -224,6 +224,19 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
                         />
                       ))}
                     </div>
+
+                    {/* Date Input (dd-mm) */}
+                    <input
+                      type="text"
+                      className="ep-date-input"
+                      placeholder="dd-mm"
+                      maxLength={5}
+                      value={item.eventDate || ''}
+                      onChange={(e) =>
+                        updateNewsItem(item.countryCode, 'eventDate', e.target.value)
+                      }
+                      title="Event Date (dd-mm)"
+                    />
                   </div>
                 )}
 

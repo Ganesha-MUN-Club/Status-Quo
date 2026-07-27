@@ -273,5 +273,6 @@ function rowToItem(row) {
     dragDx: row.drag_dx || 0,
     dragDy: row.drag_dy || 0,
     newsSource: row.news_source || null,
+    eventDate: row.event_date || null,
   };
 }

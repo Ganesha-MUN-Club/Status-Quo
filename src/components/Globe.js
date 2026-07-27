@@ -586,6 +586,9 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
                   />
                 )}
                 <div className="callout-box-title">{item.countryName}</div>
+                {item.eventDate && (
+                  <span className="callout-box-date">{item.eventDate}</span>
+                )}
                 {item.newsSource && (
                   <div style={{ marginLeft: 'auto', display: 'flex', gap: '4px', alignItems: 'center', flexShrink: 0 }}>
                     {item.newsSource.split(',').filter(Boolean).map(domain => (
