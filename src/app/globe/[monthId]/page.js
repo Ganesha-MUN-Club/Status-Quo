@@ -160,6 +160,7 @@ export default function GlobePage({ params }) {
               onClickCountry={isLocked ? undefined : handleCountryClick}
               draggedOffsets={draggedOffsets}
               onDraggedOffsetsChange={handleDraggedOffsetsChange}
+              monthId={decodedMonthId}
             />
           </div>
 
@@ -181,6 +182,7 @@ export default function GlobePage({ params }) {
             isMinimized={isEditorMinimized}
             onMinimizeChange={setIsEditorMinimized}
             readOnly={isLocked}
+            monthId={decodedMonthId}
           />
 
           <div className="region-selector-bar">

@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { getFlagUrl } from '@/lib/flags';
 import COUNTRY_COORDINATES from '@/lib/coordinates';
+import { formatEventDate } from '@/lib/dateUtils';
 
 const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -64,7 +65,7 @@ function resolveCollisions(items, boxWidth = 190, defaultHeight = 44, canvasSize
   return adjusted;
 }
 
-export default function Globe({ region, newsItems, canvasSize = 760, hoveredCountry, onHoverCountry, onClickCountry, isExportMode = false, draggedOffsets = {}, onDraggedOffsetsChange }) {
+export default function Globe({ region, newsItems, canvasSize = 760, hoveredCountry, onHoverCountry, onClickCountry, isExportMode = false, draggedOffsets = {}, onDraggedOffsetsChange, monthId }) {
   const svgRef = useRef(null);
   const worldDataRef = useRef(null);
 
@@ -586,9 +587,6 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
                   />
                 )}
                 <div className="callout-box-title">{item.countryName}</div>
-                {item.eventDate && (
-                  <span className="callout-box-date">{item.eventDate}</span>
-                )}
                 {item.newsSource && (
                   <div style={{ marginLeft: 'auto', display: 'flex', gap: '4px', alignItems: 'center', flexShrink: 0 }}>
                     {item.newsSource.split(',').filter(Boolean).map(domain => (
@@ -617,7 +615,12 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
                   </div>
                 )}
               </div>
-              <div className="callout-box-text">{item.newsText}</div>
+              <div className="callout-box-text">
+                {item.eventDate && formatEventDate(item.eventDate, monthId) && (
+                  <span className="callout-inline-date">{formatEventDate(item.eventDate, monthId)} — </span>
+                )}
+                {item.newsText}
+              </div>
               {item.affected && item.affected.length > 0 && (
                 <div style={{ marginTop: '6px', paddingTop: '4px', borderTop: '1px solid rgba(0, 0, 0, 0.05)', display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap' }}>
                   {item.affected.map((rel) => {

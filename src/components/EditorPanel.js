@@ -5,6 +5,7 @@ import REGIONS, { ALLIANCES } from '@/lib/regions';
 import FLAG_COLORS from '@/lib/flagColors';
 import { NEWS_SOURCES } from '@/lib/newsSources';
 import { getFlagUrl } from '@/lib/flags';
+import { formatEventDate } from '@/lib/dateUtils';
 
 function Flag({ code, size = 18 }) {
   const url = getFlagUrl(code);
@@ -39,7 +40,7 @@ function Section({ label, defaultOpen = true, children }) {
   );
 }
 
-export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hoveredCountry, onHoverCountry, isMinimized, onMinimizeChange, readOnly = false }) {
+export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hoveredCountry, onHoverCountry, isMinimized, onMinimizeChange, readOnly = false, monthId }) {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [countrySearch, setCountrySearch] = useState('');
   const [expandedCards, setExpandedCards] = useState({});
@@ -225,18 +226,25 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
                       ))}
                     </div>
 
-                    {/* Date Input (dd-mm) */}
-                    <input
-                      type="text"
-                      className="ep-date-input"
-                      placeholder="dd-mm"
-                      maxLength={5}
-                      value={item.eventDate || ''}
-                      onChange={(e) =>
-                        updateNewsItem(item.countryCode, 'eventDate', e.target.value)
-                      }
-                      title="Event Date (dd-mm)"
-                    />
+                    {/* Day Input */}
+                    <div className="ep-date-group" style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <input
+                        type="text"
+                        className="ep-date-input"
+                        placeholder="Day"
+                        maxLength={2}
+                        value={item.eventDate || ''}
+                        onChange={(e) =>
+                          updateNewsItem(item.countryCode, 'eventDate', e.target.value)
+                        }
+                        title={`Day of event (e.g. 26). Formats to: ${formatEventDate(item.eventDate, monthId) || 'e.g. 26 July 2026'}`}
+                      />
+                      {item.eventDate && formatEventDate(item.eventDate, monthId) && (
+                        <span className="ep-date-preview" title={formatEventDate(item.eventDate, monthId)}>
+                          {formatEventDate(item.eventDate, monthId)}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 )}
 
