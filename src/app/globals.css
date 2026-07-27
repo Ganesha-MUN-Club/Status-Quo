@@ -925,7 +925,7 @@ body {
 
 .callout-box {
   position: absolute;
-  width: 160px;
+  width: 190px;
   padding: 10px 12px;
   border-radius: var(--radius-xs);
   color: var(--color-dark);

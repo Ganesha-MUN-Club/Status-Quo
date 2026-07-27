@@ -13,7 +13,7 @@ const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110
  * Takes an array of { x, y, ... } positions and returns adjusted positions
  * so that boxes don't overlap each other.
  */
-function resolveCollisions(items, boxWidth = 160, defaultHeight = 44, canvasSize = 600) {
+function resolveCollisions(items, boxWidth = 190, defaultHeight = 44, canvasSize = 600) {
   if (items.length === 0) return items;
 
   const adjusted = items.map((item) => ({ 
@@ -521,7 +521,7 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
             key={`line-${item.countryCode}`}
             x1={item.centroidX}
             y1={item.centroidY}
-            x2={item.adjX + (draggedOffsets[item.countryCode]?.dx || 0) + 80} // Center of 160px wide box + drag offset
+            x2={item.adjX + (draggedOffsets[item.countryCode]?.dx || 0) + 95} // Center of 190px wide box + drag offset
             y2={item.adjY + (draggedOffsets[item.countryCode]?.dy || 0) + ((item.height || 44) / 2)} // Vertical center of box + drag offset
             stroke="#000000" // Black connecting lines
             strokeWidth={hoveredCountry === item.countryCode ? 2.5 : 1.8}
