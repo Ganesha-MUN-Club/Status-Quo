@@ -88,7 +88,7 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
         countryCode: country.code,
         countryName: country.name,
         newsText: '',
-        color: CALLOUT_COLORS[0].hex,
+        color: (FLAG_COLORS[country.code] && FLAG_COLORS[country.code][0]) || '#000000',
       },
     ]);
     setSelectedCountry('');
@@ -128,6 +128,15 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
         <div className="ep-region-badge">
           <span className="ep-region-name">{region.name}</span>
           <span className="ep-count-badge">{newsItems.length}</span>
+          {!readOnly && newsItems.length > 0 && (
+            <button
+              className="ep-clear-all-btn"
+              onClick={() => onNewsChange([])}
+              title="Clear all countries in this region"
+            >
+              Clear All
+            </button>
+          )}
         </div>
 
         {newsItems.length === 0 ? (
@@ -367,7 +376,7 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
                         countryCode: c.code,
                         countryName: c.name,
                         newsText: '',
-                        color: CALLOUT_COLORS[0].hex,
+                        color: (FLAG_COLORS[c.code] && FLAG_COLORS[c.code][0]) || '#000000',
                       },
                     ]);
                     setCountrySearch('');

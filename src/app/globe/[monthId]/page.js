@@ -141,12 +141,7 @@ export default function GlobePage({ params }) {
             {isLocked && (
               <span className="readonly-badge">◆ View Only</span>
             )}
-            {isSynced && (
-              <span className="sync-indicator" title="Real-time sync active">
-                <span className="sync-dot" />
-                Live
-              </span>
-            )}
+            
             <button className="btn" onClick={handleExport}>
               ↓ Export PNG
             </button>
