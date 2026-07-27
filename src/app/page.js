@@ -168,7 +168,7 @@ export default function LandingPage() {
                   {locked ? (
                     <><span className="badge-icon">◆</span> View Only</>
                   ) : isCurrent ? (
-                    <><span className="badge-dot" /> Live — Edit</>
+                    <><span className="badge-dot" /> Live - Edit</>
                   ) : (
                     <><span className="badge-dot badge-dot-open" /> Open for Editing</>
                   )}

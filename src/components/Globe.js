@@ -617,7 +617,7 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
               </div>
               <div className="callout-box-text">
                 {item.eventDate && formatEventDate(item.eventDate, monthId) && (
-                  <span className="callout-inline-date">{formatEventDate(item.eventDate, monthId)} — </span>
+                  <span className="callout-inline-date">{formatEventDate(item.eventDate, monthId)}: </span>
                 )}
                 {item.newsText}
               </div>
