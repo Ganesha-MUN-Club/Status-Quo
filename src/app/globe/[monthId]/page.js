@@ -73,14 +73,14 @@ export default function GlobePage({ params }) {
     const country = region.countries.find((c) => c.code === code);
     if (!country) return;
 
-    const CALLOUT_COLORS = require('@/lib/colors').default;
+    const FLAG_COLORS = require('@/lib/flagColors').default;
     onNewsChange([
       ...newsItems,
       {
         countryCode: code,
         countryName: country.name,
         newsText: '',
-        color: CALLOUT_COLORS[0].hex,
+        color: (FLAG_COLORS[code] && FLAG_COLORS[code][0]) || '#000000',
       },
     ]);
   }, [newsItems, region, onNewsChange]);

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import REGIONS, { ALLIANCES } from '@/lib/regions';
-import CALLOUT_COLORS from '@/lib/colors';
+import FLAG_COLORS from '@/lib/flagColors';
 import { NEWS_SOURCES } from '@/lib/newsSources';
 import { getFlagUrl } from '@/lib/flags';
 
@@ -187,7 +187,7 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
                 {/* Inline controls row — Color + Sources */}
                 {!readOnly && (
                   <div className="ep-controls-row">
-                    {/* Color swatches */}
+                    {/* Flag-derived color swatches */}
                     <div className="ep-color-group">
                       <div 
                         className="ep-color-custom"
@@ -203,14 +203,14 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
                           className="ep-color-native"
                         />
                       </div>
-                      {CALLOUT_COLORS.map((c) => (
+                      {(FLAG_COLORS[item.countryCode] || ['#000000', '#666666', '#bbbbbb']).map((hex, i) => (
                         <div
-                          key={c.id}
-                          className={`ep-color-dot ${item.color === c.hex ? 'active' : ''}`}
-                          style={{ backgroundColor: c.hex }}
-                          title={c.label}
+                          key={`${item.countryCode}-flag-${i}`}
+                          className={`ep-color-dot ${item.color === hex ? 'active' : ''}`}
+                          style={{ backgroundColor: hex }}
+                          title={hex}
                           onClick={() =>
-                            updateNewsItem(item.countryCode, 'color', c.hex)
+                            updateNewsItem(item.countryCode, 'color', hex)
                           }
                         />
                       ))}
