@@ -1,16 +1,4 @@
 import { getDb } from './firebase';
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  deleteDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  serverTimestamp,
-} from 'firebase/firestore';
 
 // ============================================
 // Globe CRUD
@@ -20,11 +8,14 @@ import {
  * Fetch all globes, sorted by month descending.
  */
 export async function fetchGlobes() {
-  const db = getDb();
-  if (!db) return [];
+  if (typeof window === 'undefined') return [];
+  const ctx = await getDb();
+  if (!ctx) return [];
+  const { db, fs } = ctx;
+
   try {
-    const q = query(collection(db, 'globes'), orderBy('monthId', 'desc'));
-    const snapshot = await getDocs(q);
+    const q = fs.query(fs.collection(db, 'globes'), fs.orderBy('monthId', 'desc'));
+    const snapshot = await fs.getDocs(q);
     return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
   } catch (err) {
     console.error('fetchGlobes error:', err);
@@ -37,12 +28,14 @@ export async function fetchGlobes() {
  * Uses monthId as the document ID for O(1) lookups.
  */
 export async function getOrCreateGlobe(monthId) {
-  const db = getDb();
-  if (!db) return null;
+  if (typeof window === 'undefined') return null;
+  const ctx = await getDb();
+  if (!ctx) return null;
+  const { db, fs } = ctx;
 
   try {
-    const globeRef = doc(db, 'globes', monthId);
-    const snap = await getDoc(globeRef);
+    const globeRef = fs.doc(db, 'globes', monthId);
+    const snap = await fs.getDoc(globeRef);
 
     if (snap.exists()) {
       return { id: snap.id, ...snap.data() };
@@ -53,9 +46,9 @@ export async function getOrCreateGlobe(monthId) {
     const newGlobe = {
       monthId,
       title,
-      createdAt: serverTimestamp(),
+      createdAt: fs.serverTimestamp(),
     };
-    await setDoc(globeRef, newGlobe);
+    await fs.setDoc(globeRef, newGlobe);
     return { id: monthId, ...newGlobe };
   } catch (err) {
     console.error('getOrCreateGlobe error:', err);
@@ -67,15 +60,18 @@ export async function getOrCreateGlobe(monthId) {
  * Delete a globe and all its news items.
  */
 export async function deleteGlobe(monthId) {
-  const db = getDb();
-  if (!db) return;
+  if (typeof window === 'undefined') return;
+  const ctx = await getDb();
+  if (!ctx) return;
+  const { db, fs } = ctx;
+
   try {
     // Delete all news items in subcollection first
-    const itemsSnap = await getDocs(collection(db, 'globes', monthId, 'newsItems'));
-    const deletePromises = itemsSnap.docs.map((d) => deleteDoc(d.ref));
+    const itemsSnap = await fs.getDocs(fs.collection(db, 'globes', monthId, 'newsItems'));
+    const deletePromises = itemsSnap.docs.map((d) => fs.deleteDoc(d.ref));
     await Promise.all(deletePromises);
     // Delete the globe document
-    await deleteDoc(doc(db, 'globes', monthId));
+    await fs.deleteDoc(fs.doc(db, 'globes', monthId));
   } catch (err) {
     console.error('deleteGlobe error:', err);
   }
@@ -89,14 +85,17 @@ export async function deleteGlobe(monthId) {
  * Fetch all news items for a globe.
  */
 export async function fetchNewsItems(monthId) {
-  const db = getDb();
-  if (!db) return [];
+  if (typeof window === 'undefined') return [];
+  const ctx = await getDb();
+  if (!ctx) return [];
+  const { db, fs } = ctx;
+
   try {
-    const q = query(
-      collection(db, 'globes', monthId, 'newsItems'),
-      orderBy('updatedAt', 'asc')
+    const q = fs.query(
+      fs.collection(db, 'globes', monthId, 'newsItems'),
+      fs.orderBy('updatedAt', 'asc')
     );
-    const snapshot = await getDocs(q);
+    const snapshot = await fs.getDocs(q);
     return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
   } catch (err) {
     console.error('fetchNewsItems error:', err);
@@ -109,10 +108,13 @@ export async function fetchNewsItems(monthId) {
  * Uses countryCode as document ID for uniqueness.
  */
 export async function upsertNewsItem(monthId, region, item) {
-  const db = getDb();
-  if (!db) return null;
+  if (typeof window === 'undefined') return null;
+  const ctx = await getDb();
+  if (!ctx) return null;
+  const { db, fs } = ctx;
+
   try {
-    const itemRef = doc(db, 'globes', monthId, 'newsItems', item.countryCode);
+    const itemRef = fs.doc(db, 'globes', monthId, 'newsItems', item.countryCode);
     const data = {
       region,
       countryCode: item.countryCode,
@@ -124,9 +126,9 @@ export async function upsertNewsItem(monthId, region, item) {
       dragDy: item.dragDy ?? 0,
       newsSource: item.newsSource || null,
       eventDate: item.eventDate || null,
-      updatedAt: serverTimestamp(),
+      updatedAt: fs.serverTimestamp(),
     };
-    await setDoc(itemRef, data, { merge: true });
+    await fs.setDoc(itemRef, data, { merge: true });
     return data;
   } catch (err) {
     console.error('upsertNewsItem error:', err);
@@ -138,10 +140,13 @@ export async function upsertNewsItem(monthId, region, item) {
  * Delete a news item by monthId + countryCode.
  */
 export async function deleteNewsItem(monthId, countryCode) {
-  const db = getDb();
-  if (!db) return;
+  if (typeof window === 'undefined') return;
+  const ctx = await getDb();
+  if (!ctx) return;
+  const { db, fs } = ctx;
+
   try {
-    await deleteDoc(doc(db, 'globes', monthId, 'newsItems', countryCode));
+    await fs.deleteDoc(fs.doc(db, 'globes', monthId, 'newsItems', countryCode));
   } catch (err) {
     console.error('deleteNewsItem error:', err);
   }
@@ -149,15 +154,17 @@ export async function deleteNewsItem(monthId, countryCode) {
 
 /**
  * Subscribe to real-time changes on news items for a specific globe.
- * Returns an unsubscribe function.
+ * Returns a promise resolving to an unsubscribe function.
  */
-export function subscribeToNewsItems(monthId, onAdded, onModified, onRemoved) {
-  const db = getDb();
-  if (!db) return null;
+export async function subscribeToNewsItems(monthId, onAdded, onModified, onRemoved) {
+  if (typeof window === 'undefined') return () => {};
+  const ctx = await getDb();
+  if (!ctx) return () => {};
+  const { db, fs } = ctx;
 
-  const q = collection(db, 'globes', monthId, 'newsItems');
+  const q = fs.collection(db, 'globes', monthId, 'newsItems');
 
-  const unsubscribe = onSnapshot(q, (snapshot) => {
+  const unsubscribe = fs.onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       const data = { id: change.doc.id, ...change.doc.data() };
       if (change.type === 'added') {

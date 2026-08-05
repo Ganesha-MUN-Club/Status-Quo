@@ -85,8 +85,9 @@ export default function useRealtimeGlobe(monthId) {
     if (!globeRecord) return;
 
     initialLoadDone.current = false;
+    let unsubFn = null;
 
-    const unsubscribe = subscribeToNewsItems(
+    subscribeToNewsItems(
       monthId,
       // ADDED
       (row) => {
@@ -153,18 +154,17 @@ export default function useRealtimeGlobe(monthId) {
           return next;
         });
       }
-    );
-
-    if (unsubscribe) {
-      setIsSynced(true);
-      // Mark initial snapshot as done after a short delay
-      // (Firestore fires all 'added' events for existing docs on first snapshot)
-      setTimeout(() => { initialLoadDone.current = true; }, 1000);
-    }
+    ).then((unsub) => {
+      if (unsub) {
+        unsubFn = unsub;
+        setIsSynced(true);
+        setTimeout(() => { initialLoadDone.current = true; }, 1000);
+      }
+    });
 
     return () => {
-      if (unsubscribe) {
-        unsubscribe();
+      if (unsubFn) {
+        unsubFn();
         setIsSynced(false);
       }
     };

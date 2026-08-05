@@ -1,6 +1,3 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyATTvgKuKy3NL_ObptLEPoudQkTATpJPpA',
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 'status-quo-1be9b.firebaseapp.com',
@@ -11,19 +8,24 @@ const firebaseConfig = {
 };
 
 let dbInstance = null;
+let firestoreMod = null;
 
-export function getDb() {
+export async function getDb() {
   if (typeof window === 'undefined') return null;
-  if (dbInstance) return dbInstance;
+  if (dbInstance && firestoreMod) return { db: dbInstance, fs: firestoreMod };
 
   try {
+    const { initializeApp, getApps } = await import('firebase/app');
+    const fs = await import('firebase/firestore');
+    
     const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-    dbInstance = getFirestore(app);
-    return dbInstance;
+    dbInstance = fs.getFirestore(app);
+    firestoreMod = fs;
+    return { db: dbInstance, fs: firestoreMod };
   } catch (err) {
-    console.error('Firebase init error:', err);
+    console.error('Firebase browser init error:', err);
     return null;
   }
 }
 
-export const isFirebaseConfigured = () => typeof window !== 'undefined' && !!getDb();
+export const isFirebaseConfigured = () => typeof window !== 'undefined';
