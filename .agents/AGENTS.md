@@ -30,3 +30,14 @@
     END IF;
   END $$;
   ```
+
+## 4. Ruflo Architecture & SPARC Methodology
+- **Primary Harness Default**: Use Ruflo's meta-harness and subagent swarm coordination for non-trivial features, refactoring, and multi-step engineering tasks.
+- **SPARC Workflow**:
+  - **Specification**: Define exact requirements, inputs, outputs, and edge cases before coding.
+  - **Pseudocode**: Outline control flow and algorithmic logic prior to writing implementation.
+  - **Architecture**: Map out component hierarchies, data structures, and file contracts.
+  - **Refinement**: Write complete, zero-placeholder code preserving existing conventions.
+  - **Completion**: Formally verify changes via automated builds, test execution, and empirical checks.
+- **Subagent Routing**: Spawn specialized subagents (Architect, Researcher, Coder, Verifier, Optimizer) for parallelized research and execution.
+
