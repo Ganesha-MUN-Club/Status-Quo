@@ -5,7 +5,12 @@ export const metadata = {
   description:
     'A monthly macro-recap of critical world news by GMUNC. Covers international relations, global political economies, and security frameworks across seven key regions.',
   icons: {
-    icon: '/gmunc-logo.png',
+    icon: [
+      { url: '/gmunc-logo.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    shortcut: '/gmunc-logo.png',
+    apple: '/gmunc-logo.png',
   },
 };
 
