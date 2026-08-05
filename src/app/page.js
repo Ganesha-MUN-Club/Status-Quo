@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { fetchGlobes, getOrCreateGlobe } from '@/lib/supabaseGlobes';
-import { isSupabaseConfigured } from '@/lib/supabase';
+import { fetchGlobes, getOrCreateGlobe } from '@/lib/firebaseGlobes';
+import { isFirebaseConfigured } from '@/lib/firebase';
 
 const LandingGlobe = dynamic(() => import('@/components/LandingGlobe'), { ssr: false });
 
@@ -42,7 +42,7 @@ function generateDefaultMonths() {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const monthId = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     months.push({
-      month_id: monthId,
+      monthId: monthId,
       title: getMonthLabel(monthId),
       locked: isGlobeLocked(monthId),
       isCurrent: i === 0,
@@ -59,12 +59,12 @@ export default function LandingPage() {
 
   useEffect(() => {
     async function load() {
-      if (isSupabaseConfigured()) {
+      if (isFirebaseConfigured()) {
         let data = await fetchGlobes();
         const currentMonthId = getCurrentMonthId();
         
         // Auto-create current month's globe if it does not exist in the database yet
-        const currentExists = data.some((g) => g.month_id === currentMonthId);
+        const currentExists = data.some((g) => (g.monthId || g.month_id) === currentMonthId);
         if (!currentExists) {
           const created = await getOrCreateGlobe(currentMonthId);
           if (created) {
@@ -76,15 +76,16 @@ export default function LandingPage() {
         if (data.length > 0) {
           const enriched = data.map((g) => ({
             ...g,
-            locked: isGlobeLocked(g.month_id),
-            isCurrent: g.month_id === currentMonthId,
-          })).filter(g => g.month_id >= '2026-07');
+            monthId: g.monthId || g.month_id,
+            locked: isGlobeLocked(g.monthId || g.month_id),
+            isCurrent: (g.monthId || g.month_id) === currentMonthId,
+          })).filter(g => (g.monthId || g.month_id) >= '2026-07');
           setGlobes(enriched);
         } else {
-          setGlobes(generateDefaultMonths().filter(g => g.month_id >= '2026-07'));
+          setGlobes(generateDefaultMonths().filter(g => g.monthId >= '2026-07'));
         }
       } else {
-        setGlobes(generateDefaultMonths().filter(g => g.month_id >= '2026-07'));
+        setGlobes(generateDefaultMonths().filter(g => g.monthId >= '2026-07'));
       }
       setIsLoaded(true);
     }
@@ -92,7 +93,7 @@ export default function LandingPage() {
   }, []);
 
   const handleOpenGlobe = useCallback(async (monthId) => {
-    if (isSupabaseConfigured()) {
+    if (isFirebaseConfigured()) {
       await getOrCreateGlobe(monthId);
     }
     router.push(`/globe/${monthId}`);
@@ -101,7 +102,7 @@ export default function LandingPage() {
   const handleCreateMonth = useCallback(async () => {
     const monthId = getCurrentMonthId();
     setCreating(true);
-    if (isSupabaseConfigured()) {
+    if (isFirebaseConfigured()) {
       await getOrCreateGlobe(monthId);
     }
     router.push(`/globe/${monthId}`);
@@ -154,15 +155,16 @@ export default function LandingPage() {
           {globes.map((globe, idx) => {
             const locked = globe.locked;
             const isCurrent = globe.isCurrent;
+            const mId = globe.monthId || globe.month_id;
             return (
               <button
-                key={globe.month_id}
+                key={mId}
                 className={`landing-edition-card ${isCurrent ? 'current' : ''} ${locked ? 'locked' : ''}`}
-                onClick={() => handleOpenGlobe(globe.month_id)}
+                onClick={() => handleOpenGlobe(mId)}
                 style={{ animationDelay: `${idx * 80}ms` }}
               >
                 <div className="edition-card-month">
-                  {getMonthLabel(globe.month_id)}
+                  {getMonthLabel(mId)}
                 </div>
                 <div className={`edition-card-badge ${locked ? 'badge-locked' : 'badge-live'}`}>
                   {locked ? (
@@ -181,7 +183,7 @@ export default function LandingPage() {
           })}
         </div>
 
-        {!globes.some((g) => g.month_id === getCurrentMonthId()) && (
+        {!globes.some((g) => (g.monthId || g.month_id) === getCurrentMonthId()) && (
           <button
             className="landing-create-btn"
             onClick={handleCreateMonth}

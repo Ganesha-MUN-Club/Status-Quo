@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Globes collection — public read, insert for any month
+    match /globes/{monthId} {
+      allow read: if true;
+      allow write: if true;
+
+      // News items subcollection — public read and write
+      match /newsItems/{countryCode} {
+        allow read: if true;
+        allow write: if true;
+      }
+    }
+  }
+}

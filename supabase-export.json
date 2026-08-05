@@ -1,0 +1,288 @@
+{
+  "globes": [
+    {
+      "id": "528c6e4e-9052-49fc-ade9-5eb1cca0dce1",
+      "month_id": "2026-08",
+      "title": "August 2026",
+      "created_at": "2026-08-05T10:02:20.072594+00:00"
+    },
+    {
+      "id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "month_id": "2026-07",
+      "title": "July 2026",
+      "created_at": "2026-07-08T13:06:24.329384+00:00"
+    }
+  ],
+  "newsItems": [
+    {
+      "id": "453677ad-c15f-47ec-ab9e-9552a5b7e946",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "alliances",
+      "country_code": "NAT",
+      "country_name": "NATO",
+      "news_text": "",
+      "color": "#000000",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-26T16:27:40.146492+00:00",
+      "news_source": null
+    },
+    {
+      "id": "17a5cd40-fa40-4ded-9ad7-4309e454b088",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "north_america",
+      "country_code": "CAN",
+      "country_name": "Canada",
+      "news_text": "",
+      "color": "#FF0000",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:12:55.747897+00:00",
+      "news_source": null
+    },
+    {
+      "id": "673ccd43-e840-49e3-a337-e3a405cb0af8",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "north_america",
+      "country_code": "MEX",
+      "country_name": "Mexico",
+      "news_text": "",
+      "color": "#006847",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:13:06.327879+00:00",
+      "news_source": null
+    },
+    {
+      "id": "ddb19ff8-c7df-4301-a553-9740a2d35eb0",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "north_america",
+      "country_code": "CUB",
+      "country_name": "Cuba",
+      "news_text": "",
+      "color": "#002A8F",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:17:23.003768+00:00",
+      "news_source": null
+    },
+    {
+      "id": "1d600a93-791e-4c00-a13d-f7fe9e17fc23",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "ISR",
+      "country_name": "Israel",
+      "news_text": "",
+      "color": "#0038B8",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:00.174274+00:00",
+      "news_source": null
+    },
+    {
+      "id": "80890f5d-d445-413a-b4c9-5dcd05f89c25",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "PSE",
+      "country_name": "Palestine",
+      "news_text": "",
+      "color": "#007A3D",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:06.403802+00:00",
+      "news_source": null
+    },
+    {
+      "id": "b17ce186-41b1-4ed6-9efb-44aaabe9fe16",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "YEM",
+      "country_name": "Yemen",
+      "news_text": "",
+      "color": "#CE1126",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:10.459733+00:00",
+      "news_source": null
+    },
+    {
+      "id": "844b5873-eaa3-4159-a051-fc389021be97",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "IRN",
+      "country_name": "Iran",
+      "news_text": "",
+      "color": "#239F40",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:12.945956+00:00",
+      "news_source": null
+    },
+    {
+      "id": "33d80fd5-ec37-4fb8-9d05-5aac0c0a53e7",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "LBN",
+      "country_name": "Lebanon",
+      "news_text": "",
+      "color": "#ED1C24",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:24.748777+00:00",
+      "news_source": null
+    },
+    {
+      "id": "add8deac-315b-4d3a-af41-9789cb88cc84",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "SAU",
+      "country_name": "Saudi Arabia",
+      "news_text": "",
+      "color": "#006C35",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:34.467899+00:00",
+      "news_source": null
+    },
+    {
+      "id": "20805f2b-6a4f-417c-a3b5-ba9420cb8879",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "ARE",
+      "country_name": "UAE",
+      "news_text": "",
+      "color": "#FF0000",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:19:48.719402+00:00",
+      "news_source": null
+    },
+    {
+      "id": "fa0deabf-25a0-49db-bcb0-6e3fdb4fa2b0",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "OMN",
+      "country_name": "Oman",
+      "news_text": "",
+      "color": "#DB161B",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:20:03.785458+00:00",
+      "news_source": null
+    },
+    {
+      "id": "b81d6d80-4683-4b68-9b95-b35ca03d6bd2",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "IRQ",
+      "country_name": "Iraq",
+      "news_text": "",
+      "color": "#CE1126",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:20:11.541416+00:00",
+      "news_source": null
+    },
+    {
+      "id": "d6e10441-9bae-4f1e-9f13-077f2d5da324",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "middle_east",
+      "country_code": "SYR",
+      "country_name": "Syria",
+      "news_text": "",
+      "color": "#CE1126",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:20:16.95973+00:00",
+      "news_source": null
+    },
+    {
+      "id": "3cf74bf1-3aee-489b-8a66-938f2bbdd9f7",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "oceania",
+      "country_code": "AUS",
+      "country_name": "Australia",
+      "news_text": "",
+      "color": "#00008B",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:27:11.630718+00:00",
+      "news_source": null
+    },
+    {
+      "id": "71777306-9448-4e39-b15a-85a05b1a954f",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "oceania",
+      "country_code": "NZL",
+      "country_name": "New Zealand",
+      "news_text": "",
+      "color": "#00247D",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:27:12.866232+00:00",
+      "news_source": null
+    },
+    {
+      "id": "daa54dfb-0b9f-48b9-9795-2dd04bdeca71",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "oceania",
+      "country_code": "PNG",
+      "country_name": "Papua New Guinea",
+      "news_text": "",
+      "color": "#CE1126",
+      "affected": [],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:27:18.093335+00:00",
+      "news_source": null
+    },
+    {
+      "id": "12d823ef-46a8-4ba3-8779-956dc6df311c",
+      "globe_id": "ea470380-fd8e-47f5-a32a-7d0893562c3a",
+      "region": "north_america",
+      "country_code": "USA",
+      "country_name": "United States",
+      "news_text": "sjdkfbsdjkfjsdfjksdfsdjklsdjkfsdjfsjdfsdjfnsdfjksdfjksdfjksdfjksdfjksdnffsdkjsdjksdjkfsdjkfjksdfjksdnjksnsndffsd",
+      "color": "#B31942",
+      "affected": [
+        {
+          "type": "improve",
+          "countryCode": "DMA"
+        },
+        {
+          "type": "improve",
+          "countryCode": "NAT"
+        },
+        {
+          "type": "deteriorate",
+          "countryCode": "BHR"
+        },
+        {
+          "type": "deteriorate",
+          "countryCode": "FJI"
+        }
+      ],
+      "drag_dx": 0,
+      "drag_dy": 0,
+      "updated_at": "2026-07-27T16:27:34.435625+00:00",
+      "news_source": "apnews.com,pbs.org"
+    }
+  ],
+  "exportedAt": "2026-08-05T10:11:25.497Z"
+}

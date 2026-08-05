@@ -7,11 +7,11 @@ import {
   upsertNewsItem,
   deleteNewsItem,
   subscribeToNewsItems,
-} from '@/lib/supabaseGlobes';
-import { isSupabaseConfigured } from '@/lib/supabase';
+} from '@/lib/firebaseGlobes';
+import { isFirebaseConfigured } from '@/lib/firebase';
 
 /**
- * Custom React hook for real-time globe state synchronization with Supabase.
+ * Custom React hook for real-time globe state synchronization with Firebase Firestore.
  *
  * Provides:
  *  - newsItemsByRegion: grouped news items state
@@ -19,7 +19,7 @@ import { isSupabaseConfigured } from '@/lib/supabase';
  *  - handleNewsChange(region, items): update news items (with debounced DB sync)
  *  - handleDraggedOffsetsChange(offsets): update drag offsets (with debounced DB sync)
  *  - isLoading: whether initial data is still loading
- *  - isSynced: whether Supabase connection is active
+ *  - isSynced: whether Firebase connection is active
  */
 export default function useRealtimeGlobe(monthId) {
   const [globeRecord, setGlobeRecord] = useState(null);
@@ -35,10 +35,12 @@ export default function useRealtimeGlobe(monthId) {
   // Ref to latest state for use in callbacks
   const newsItemsByRegionRef = useRef(newsItemsByRegion);
   newsItemsByRegionRef.current = newsItemsByRegion;
+  // Track whether initial snapshot has been processed
+  const initialLoadDone = useRef(false);
 
-  // ── Bootstrap: get-or-create globe, load existing news items ──
+  // -- Bootstrap: get-or-create globe, load existing news items --
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
+    if (!isFirebaseConfigured()) {
       setIsLoading(false);
       return;
     }
@@ -53,7 +55,7 @@ export default function useRealtimeGlobe(monthId) {
       }
       setGlobeRecord(globe);
 
-      const rows = await fetchNewsItems(globe.id);
+      const rows = await fetchNewsItems(monthId);
       if (cancelled) return;
 
       // Group rows by region into newsItemsByRegion and extract drag offsets
@@ -64,8 +66,8 @@ export default function useRealtimeGlobe(monthId) {
         if (!grouped[row.region]) grouped[row.region] = [];
         grouped[row.region].push(rowToItem(row));
 
-        if (row.drag_dx !== 0 || row.drag_dy !== 0) {
-          offsets[row.country_code] = { dx: row.drag_dx, dy: row.drag_dy };
+        if (row.dragDx !== 0 || row.dragDy !== 0) {
+          offsets[row.countryCode] = { dx: row.dragDx, dy: row.dragDy };
         }
       }
 
@@ -78,43 +80,48 @@ export default function useRealtimeGlobe(monthId) {
     return () => { cancelled = true; };
   }, [monthId]);
 
-  // ── Realtime subscription ──
+  // -- Realtime subscription --
   useEffect(() => {
     if (!globeRecord) return;
 
-    const channel = subscribeToNewsItems(
-      globeRecord.id,
-      // INSERT
+    initialLoadDone.current = false;
+
+    const unsubscribe = subscribeToNewsItems(
+      monthId,
+      // ADDED
       (row) => {
-        if (pendingWrites.current.has(row.country_code)) {
-          pendingWrites.current.delete(row.country_code);
+        // Skip initial snapshot additions (we already loaded them)
+        if (!initialLoadDone.current) return;
+
+        if (pendingWrites.current.has(row.countryCode)) {
+          pendingWrites.current.delete(row.countryCode);
           return; // Skip our own echo
         }
         setNewsItemsByRegion((prev) => {
           const region = row.region;
           const existing = prev[region] || [];
-          if (existing.some((i) => i.countryCode === row.country_code)) return prev;
+          if (existing.some((i) => i.countryCode === row.countryCode)) return prev;
           return { ...prev, [region]: [...existing, rowToItem(row)] };
         });
-        if (row.drag_dx !== 0 || row.drag_dy !== 0) {
+        if (row.dragDx !== 0 || row.dragDy !== 0) {
           setDraggedOffsets((prev) => ({
             ...prev,
-            [row.country_code]: { dx: row.drag_dx, dy: row.drag_dy },
+            [row.countryCode]: { dx: row.dragDx, dy: row.dragDy },
           }));
         }
       },
-      // UPDATE
+      // MODIFIED
       (row) => {
-        if (pendingWrites.current.has(row.country_code)) {
-          pendingWrites.current.delete(row.country_code);
+        if (pendingWrites.current.has(row.countryCode)) {
+          pendingWrites.current.delete(row.countryCode);
           return; // Skip our own echo
         }
         setNewsItemsByRegion((prev) => {
           const region = row.region;
           const existing = prev[region] || [];
-          const idx = existing.findIndex((i) => i.countryCode === row.country_code);
+          const idx = existing.findIndex((i) => i.countryCode === row.countryCode);
           if (idx === -1) {
-            // Might be in a different region — insert
+            // Might be in a different region - insert
             return { ...prev, [region]: [...existing, rowToItem(row)] };
           }
           const updated = [...existing];
@@ -123,42 +130,47 @@ export default function useRealtimeGlobe(monthId) {
         });
         setDraggedOffsets((prev) => ({
           ...prev,
-          [row.country_code]: { dx: row.drag_dx, dy: row.drag_dy },
+          [row.countryCode]: { dx: row.dragDx, dy: row.dragDy },
         }));
       },
-      // DELETE
+      // REMOVED
       (row) => {
-        if (pendingWrites.current.has(row.country_code)) {
-          pendingWrites.current.delete(row.country_code);
+        if (pendingWrites.current.has(row.countryCode)) {
+          pendingWrites.current.delete(row.countryCode);
           return;
         }
         setNewsItemsByRegion((prev) => {
           const newState = {};
           for (const [region, items] of Object.entries(prev)) {
-            const filtered = items.filter((i) => i.countryCode !== row.country_code);
+            const filtered = items.filter((i) => i.countryCode !== row.countryCode);
             if (filtered.length > 0) newState[region] = filtered;
           }
           return newState;
         });
         setDraggedOffsets((prev) => {
           const next = { ...prev };
-          delete next[row.country_code];
+          delete next[row.countryCode];
           return next;
         });
       }
     );
 
-    if (channel) setIsSynced(true);
+    if (unsubscribe) {
+      setIsSynced(true);
+      // Mark initial snapshot as done after a short delay
+      // (Firestore fires all 'added' events for existing docs on first snapshot)
+      setTimeout(() => { initialLoadDone.current = true; }, 1000);
+    }
 
     return () => {
-      if (channel) {
-        channel.unsubscribe();
+      if (unsubscribe) {
+        unsubscribe();
         setIsSynced(false);
       }
     };
-  }, [globeRecord]);
+  }, [globeRecord, monthId]);
 
-  // ── Debounced write helper ──
+  // -- Debounced write helper --
   const debouncedUpsert = useCallback(
     (region, item) => {
       if (!globeRecord) return;
@@ -170,14 +182,14 @@ export default function useRealtimeGlobe(monthId) {
 
       debounceTimers.current[key] = setTimeout(async () => {
         pendingWrites.current.add(key);
-        await upsertNewsItem(globeRecord.id, region, item);
+        await upsertNewsItem(monthId, region, item);
         delete debounceTimers.current[key];
       }, 300);
     },
-    [globeRecord]
+    [globeRecord, monthId]
   );
 
-  // ── Public: handleNewsChange ──
+  // -- Public: handleNewsChange --
   const handleNewsChange = useCallback(
     (region, items) => {
       // Find what changed compared to previous state
@@ -194,7 +206,7 @@ export default function useRealtimeGlobe(monthId) {
       for (const code of prevCodes) {
         if (!newCodes.has(code)) {
           pendingWrites.current.add(code);
-          deleteNewsItem(globeRecord.id, code);
+          deleteNewsItem(monthId, code);
           // Clean up drag offset for deleted items
           setDraggedOffsets((prev) => {
             const next = { ...prev };
@@ -212,10 +224,10 @@ export default function useRealtimeGlobe(monthId) {
         }
       }
     },
-    [globeRecord, debouncedUpsert]
+    [globeRecord, monthId, debouncedUpsert]
   );
 
-  // ── Public: handleDraggedOffsetsChange ──
+  // -- Public: handleDraggedOffsetsChange --
   const handleDraggedOffsetsChange = useCallback(
     (newOffsets) => {
       setDraggedOffsets(newOffsets);
@@ -241,7 +253,7 @@ export default function useRealtimeGlobe(monthId) {
     [globeRecord, debouncedUpsert]
   );
 
-  // ── Cleanup timers on unmount ──
+  // -- Cleanup timers on unmount --
   useEffect(() => {
     return () => {
       for (const timer of Object.values(debounceTimers.current)) {
@@ -261,18 +273,18 @@ export default function useRealtimeGlobe(monthId) {
   };
 }
 
-// ── Row ↔ Item conversion ──
+// -- Row to Item conversion --
 
 function rowToItem(row) {
   return {
-    countryCode: row.country_code,
-    countryName: row.country_name,
-    newsText: row.news_text,
+    countryCode: row.countryCode,
+    countryName: row.countryName,
+    newsText: row.newsText,
     color: row.color,
     affected: row.affected || [],
-    dragDx: row.drag_dx || 0,
-    dragDy: row.drag_dy || 0,
-    newsSource: row.news_source || null,
-    eventDate: row.event_date || null,
+    dragDx: row.dragDx || 0,
+    dragDy: row.dragDy || 0,
+    newsSource: row.newsSource || null,
+    eventDate: row.eventDate || null,
   };
 }

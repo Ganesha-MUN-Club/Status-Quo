@@ -102,13 +102,16 @@ Click **`↓ Export PNG`** in the top right to download a high-res, transparent 
 ### Environment Configuration
 Create a `.env.local` file in the root directory to enable cloud persistence:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
 ```
-If credentials are not provided, the application automatically falls back to an in-memory session state (edits will not persist across browser reloads).
 
-### Database Migration
-If setting up a new Supabase backend, run the SQL schema defined in [supabase-migration.sql](supabase-migration.sql) inside the Supabase SQL Editor. This initializes the `globes` and `news_items` tables, configures automated Row-Level Security (RLS) policies, and registers realtime replication.
+### Database Backend
+This project uses **Firebase Cloud Firestore** for real-time document storage and live state synchronization across editing sessions. Security rules are defined in [firestore.rules](firestore.rules).
 
 ### Cloudflare Deployment
 This project is configured to be deployed on **Cloudflare Workers** using the `@opennextjs/cloudflare` OpenNext adapter.
