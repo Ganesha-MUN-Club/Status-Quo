@@ -108,9 +108,18 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
   };
 
   return (
-    <div className={`editor-panel ${isMinimized ? 'minimized' : ''}`}>
-      {/* Editor Panel Header */}
-      <div className="editor-header-row">
+    <>
+      {!isMinimized && (
+        <div
+          className="editor-panel-backdrop"
+          onClick={() => onMinimizeChange(true)}
+          title="Close Editor"
+        />
+      )}
+      <div className={`editor-panel ${isMinimized ? 'minimized' : ''}`}>
+        <div className="ep-drag-handle" />
+        {/* Editor Panel Header */}
+        <div className="editor-header-row">
         <div className="ep-header-left">
           <div className="ep-header-dot" />
           <h2 className="editor-title">Editor</h2>
@@ -412,5 +421,6 @@ export default function EditorPanel({ activeRegion, newsItems, onNewsChange, hov
         )}
       </div>
     </div>
+    </>
   );
 }

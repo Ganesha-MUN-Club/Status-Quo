@@ -1671,6 +1671,223 @@ body {
   .landing-nav {
     padding: 16px 20px;
   }
+
+  /* ── Mobile Editor Layout & Ergonomics ── */
+  .app-layout {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .top-bar {
+    padding: 8px 12px;
+    height: auto;
+    min-height: 52px;
+  }
+
+  .top-bar-left {
+    gap: 8px;
+  }
+
+  .top-bar-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .top-bar-title h1 {
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  .top-bar-title p {
+    font-size: 10px;
+  }
+
+  .top-bar-actions {
+    gap: 6px;
+  }
+
+  .top-bar-actions .btn {
+    padding: 6px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+
+  .readonly-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  /* ── Work Area & Globe Canvas on Mobile ── */
+  .main-work-area {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .globe-area {
+    position: absolute;
+    inset: 0;
+    bottom: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Floating Scrollable Region Bar on Mobile ── */
+  .region-selector-bar {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    transform: none;
+    max-width: none;
+    width: calc(100% - 20px);
+    display: flex;
+    gap: 6px;
+    padding: 5px 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+  }
+
+  .region-selector-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .region-tab-pill {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 10px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Mobile Editor Slide-Up Bottom Drawer ── */
+  .editor-panel {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 70vh;
+    max-height: calc(100dvh - 60px);
+    border-radius: 20px 20px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(40px) saturate(1.4);
+    -webkit-backdrop-filter: blur(40px) saturate(1.4);
+    box-shadow: 0 -8px 36px rgba(0, 0, 0, 0.22);
+    z-index: 200;
+    transform: translateY(0);
+    transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease;
+  }
+
+  .editor-panel.minimized {
+    transform: translateY(105%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ep-drag-handle {
+    display: block;
+    width: 38px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    margin: 8px auto 0;
+  }
+
+  .editor-header-row {
+    padding: 8px 16px 10px;
+  }
+
+  .ep-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .editor-panel-content {
+    padding: 10px 14px 20px;
+    gap: 12px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Mobile Form Inputs & Touch Ergonomics ── */
+  .ep-select,
+  .ep-input,
+  .ep-country-search,
+  .add-affected-select,
+  .ep-source-select {
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  .ep-textarea {
+    font-size: 14px;
+    min-height: 80px;
+  }
+
+  .country-pill {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* ── Mobile Floating Open Editor Button ── */
+  .btn-minimize-floating {
+    position: fixed;
+    bottom: 66px;
+    right: 14px;
+    left: auto;
+    top: auto;
+    z-index: 150;
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+
+  /* ── Mobile Backdrop Overlay ── */
+  .editor-panel-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 190;
+    animation: fadeIn 200ms ease;
+  }
+}
+
+@media (min-width: 769px) {
+  .ep-drag-handle {
+    display: none;
+  }
+  .editor-panel-backdrop {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {
