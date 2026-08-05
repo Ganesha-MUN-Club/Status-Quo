@@ -89,7 +89,7 @@ Click **`↓ Export PNG`** in the top right to download a high-res, transparent 
 ### Installation
 1. Clone the repository and install dependencies:
    ```bash
-   git clone https://github.com/gmuncitb/Status-Quo.git
+   git clone https://github.com/Ganesha-MUN-Club/Status-Quo.git
    cd Status-Quo
    npm install
    ```
