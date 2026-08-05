@@ -13,6 +13,7 @@ const firebaseConfig = {
 let dbInstance = null;
 
 export function getDb() {
+  if (typeof window === 'undefined') return null;
   if (dbInstance) return dbInstance;
 
   try {
@@ -25,4 +26,4 @@ export function getDb() {
   }
 }
 
-export const isFirebaseConfigured = () => !!getDb();
+export const isFirebaseConfigured = () => typeof window !== 'undefined' && !!getDb();
