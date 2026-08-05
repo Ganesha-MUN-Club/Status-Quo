@@ -578,25 +578,26 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
                     src={flagUrl}
                     alt=""
                     style={{
-                      width: 14,
-                      height: 10,
+                      width: 18,
+                      height: 12,
                       objectFit: 'cover',
-                      borderRadius: 1,
-                      boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.05)',
+                      borderRadius: 2,
+                      boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)',
+                      flexShrink: 0,
                     }}
                   />
                 )}
                 <div className="callout-box-title">{item.countryName}</div>
                 {item.newsSource && (
-                  <div style={{ marginLeft: 'auto', display: 'flex', gap: '4px', alignItems: 'center', flexShrink: 0 }}>
+                  <div style={{ marginLeft: 'auto', display: 'flex', gap: '5px', alignItems: 'center', flexShrink: 0, backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: '2px 5px', borderRadius: 4, border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
                     {item.newsSource.split(',').filter(Boolean).map(domain => (
                       <img 
                         key={domain}
                         src={`https://logos.hunter.io/${domain}`} 
                         alt=""
                         style={{
-                          height: 12,
-                          maxHeight: 12,
+                          height: 14,
+                          maxHeight: 14,
                           width: 'auto',
                           objectFit: 'contain',
                           borderRadius: 2,
@@ -617,7 +618,7 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
               </div>
               <div className="callout-box-text">
                 {item.eventDate && formatEventDate(item.eventDate, monthId) && (
-                  <span className="callout-inline-date">{formatEventDate(item.eventDate, monthId)}: </span>
+                  <span className="callout-inline-date">{formatEventDate(item.eventDate, monthId)} </span>
                 )}
                 {item.newsText}
               </div>

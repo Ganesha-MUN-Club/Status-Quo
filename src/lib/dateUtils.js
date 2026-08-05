@@ -1,10 +1,10 @@
 const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
 
 /**
- * Formats a day input (e.g., "26" or "26-07") into a full date string "26 July 2026"
+ * Formats a day input (e.g., "26" or "26-07") into a short date string "26 Jul 2026"
  * based on the active globe's monthId ("YYYY-MM").
  */
 export function formatEventDate(eventDate, monthId) {
