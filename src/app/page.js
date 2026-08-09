@@ -118,8 +118,8 @@ export default function LandingPage() {
         {/* Navigation */}
         <nav className="landing-nav">
           <div className="landing-nav-left">
-            <img src="/gmunc-logo.png" alt="GMUNC" className="landing-nav-logo" />
-            <span className="landing-nav-brand">GMUNC</span>
+            <img src="/gmunc-logo.png" alt="Ganesha MUN Club" className="landing-nav-logo" />
+            <span className="landing-nav-brand">Ganesha MUN Club</span>
           </div>
         </nav>
 
@@ -134,7 +134,7 @@ export default function LandingPage() {
           <p className="landing-hero-subtitle">
             A Monthly Macro-Recap of World Affairs
           </p>
-          <p className="landing-hero-org">by GMUNC</p>
+          <p className="landing-hero-org">by Ganesha MUN Club ITB</p>
         </div>
 
         {/* Scroll indicator */}
@@ -196,9 +196,9 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="landing-footer">
-        <img src="/gmunc-logo.png" alt="GMUNC" className="landing-footer-logo" />
+        <img src="/gmunc-logo.png" alt="Ganesha MUN Club ITB" className="landing-footer-logo" />
         <div className="landing-footer-text">
-          <span>GMUNC · Status Quo · {new Date().getFullYear()}</span>
+          <span>Ganesha MUN Club ITB · Status Quo · {new Date().getFullYear()}</span>
         </div>
       </footer>
     </div>
