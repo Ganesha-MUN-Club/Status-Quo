@@ -1,7 +1,7 @@
 # GMUNC's Status Quo
 
 A premium, web-based real-time collaborative workspace for creating monthly geopolitical recaps and exporting high-resolution slides.
-
+https://statusquo.gmunc-itb.workers.dev/
 ---
 
 ## 🌟 Overview for the Academics Team
