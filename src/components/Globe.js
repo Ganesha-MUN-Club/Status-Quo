@@ -88,8 +88,27 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
   const [scale, setScale] = useState(baseGlobeRadius * (region.scale || 1.0));
   const [worldDataLoaded, setWorldDataLoaded] = useState(false);
 
-  // Ref to track active drag operation in progress
-  const dragRef = useRef(null);
+  // Boundary alert state & position tracking ref
+  const [boundaryHitState, setBoundaryHitState] = useState(null);
+  const boundaryTimerRef = useRef(null);
+  const calloutPosMapRef = useRef({});
+
+  // Sync callout positions to ref for instant lookup during drag operations
+  useEffect(() => {
+    const map = {};
+    for (const pos of calloutPositions) {
+      map[pos.countryCode] = pos;
+    }
+    calloutPosMapRef.current = map;
+  }, [calloutPositions]);
+
+  const triggerBoundaryAlert = useCallback((hitEdges) => {
+    setBoundaryHitState(hitEdges);
+    if (boundaryTimerRef.current) clearTimeout(boundaryTimerRef.current);
+    boundaryTimerRef.current = setTimeout(() => {
+      setBoundaryHitState(null);
+    }, 1800);
+  }, []);
 
   const handleMouseMove = useCallback((e) => {
     if (!dragRef.current) return;
@@ -97,16 +116,49 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
     const diffX = e.clientX - startX;
     const diffY = e.clientY - startY;
 
+    const pos = calloutPosMapRef.current[countryCode];
+    const baseAdjX = pos ? pos.adjX : 0;
+    const baseAdjY = pos ? pos.adjY : 0;
+    const boxWidth = 190;
+    const boxHeight = pos ? (pos.height || 44) : 44;
+
+    const padding = 4;
+    const minDx = padding - baseAdjX;
+    const maxDx = canvasSize - boxWidth - padding - baseAdjX;
+    const minDy = padding - baseAdjY;
+    const maxDy = canvasSize - boxHeight - padding - baseAdjY;
+
+    const rawDx = startDx + diffX;
+    const rawDy = startDy + diffY;
+
+    const clampedDx = Math.max(minDx, Math.min(maxDx, rawDx));
+    const clampedDy = Math.max(minDy, Math.min(maxDy, rawDy));
+
+    const isHitLeft = rawDx < minDx;
+    const isHitRight = rawDx > maxDx;
+    const isHitTop = rawDy < minDy;
+    const isHitBottom = rawDy > maxDy;
+
+    if (isHitLeft || isHitRight || isHitTop || isHitBottom) {
+      triggerBoundaryAlert({
+        left: isHitLeft,
+        right: isHitRight,
+        top: isHitTop,
+        bottom: isHitBottom,
+        countryCode
+      });
+    }
+
     if (onDraggedOffsetsChange) {
       onDraggedOffsetsChange((prev) => ({
         ...prev,
         [countryCode]: {
-          dx: startDx + diffX,
-          dy: startDy + diffY
+          dx: clampedDx,
+          dy: clampedDy
         }
       }));
     }
-  }, [onDraggedOffsetsChange]);
+  }, [canvasSize, onDraggedOffsetsChange, triggerBoundaryAlert]);
 
   const handleMouseUp = useCallback(() => {
     dragRef.current = null;
@@ -504,6 +556,16 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
 
   return (
     <div className={`globe-canvas ${isExportMode ? 'export-canvas' : ''}`} style={{ width: canvasSize, height: canvasSize }}>
+      {/* 1:1 Aspect Ratio Boundary Alert Overlay */}
+      {!isExportMode && (
+        <>
+          <div className={`export-boundary-overlay ${boundaryHitState ? 'active' : ''} ${boundaryHitState ? Object.keys(boundaryHitState).filter(k => boundaryHitState[k] === true).map(k => `hit-${k}`).join(' ') : ''}`} />
+          <div className={`boundary-warning-badge ${boundaryHitState ? 'show' : ''}`}>
+            <span>⚠️</span> 1:1 Export Boundary Limit
+          </div>
+        </>
+      )}
+
       <svg
         ref={svgRef}
         viewBox={`0 0 ${internalWidth} ${internalHeight}`}
@@ -555,11 +617,12 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
         {calloutPositions.map((item) => {
           const flagUrl = getFlagUrl(item.countryCode);
           const isHovered = hoveredCountry === item.countryCode;
+          const isClamped = boundaryHitState && boundaryHitState.countryCode === item.countryCode;
           const drag = draggedOffsets[item.countryCode] || { dx: 0, dy: 0 };
           return (
             <div
               key={`box-${item.countryCode}`}
-              className="callout-box"
+              className={`callout-box ${isClamped ? 'boundary-clamped' : ''}`}
               style={{
                 left: item.adjX + drag.dx,
                 top: item.adjY + drag.dy,
