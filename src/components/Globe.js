@@ -88,19 +88,13 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
   const [scale, setScale] = useState(baseGlobeRadius * (region.scale || 1.0));
   const [worldDataLoaded, setWorldDataLoaded] = useState(false);
 
+  // Ref to track active drag operation in progress
+  const dragRef = useRef(null);
+
   // Boundary alert state & position tracking ref
   const [boundaryHitState, setBoundaryHitState] = useState(null);
   const boundaryTimerRef = useRef(null);
   const calloutPosMapRef = useRef({});
-
-  // Sync callout positions to ref for instant lookup during drag operations
-  useEffect(() => {
-    const map = {};
-    for (const pos of calloutPositions) {
-      map[pos.countryCode] = pos;
-    }
-    calloutPosMapRef.current = map;
-  }, [calloutPositions]);
 
   const triggerBoundaryAlert = useCallback((hitEdges) => {
     setBoundaryHitState(hitEdges);
@@ -553,6 +547,15 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
 
     return resolveCollisions(positions, 160, 44, canvasSize);
   }, [newsItems, rotation, scale, canvasSize]);
+
+  // Sync callout positions to ref for instant lookup during drag boundary clamping
+  useEffect(() => {
+    const map = {};
+    for (const pos of calloutPositions) {
+      map[pos.countryCode] = pos;
+    }
+    calloutPosMapRef.current = map;
+  }, [calloutPositions]);
 
   return (
     <div className={`globe-canvas ${isExportMode ? 'export-canvas' : ''}`} style={{ width: canvasSize, height: canvasSize }}>
