@@ -45,3 +45,11 @@ next-env.d.ts
 .wrangler/
 .dev.vars
 
+# Firebase & Service Account Credentials
+*-firebase-adminsdk-*.json
+*service-account*.json
+*credentials*.json
+*.secret.json
+*.key
+
+
