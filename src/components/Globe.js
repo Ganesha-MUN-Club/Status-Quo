@@ -7,7 +7,8 @@ import { getFlagUrl } from '@/lib/flags';
 import COUNTRY_COORDINATES from '@/lib/coordinates';
 import { formatEventDate } from '@/lib/dateUtils';
 
-const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+const WORLD_TOPO_LOCAL_URL = '/data/countries-110m.json';
+const WORLD_TOPO_CDN_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
 /**
  * Collision avoidance for floating callout boxes.
@@ -187,10 +188,14 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
 
   // Load world topology data once on mount
   useEffect(() => {
-    d3.json(WORLD_TOPO_URL).then((world) => {
-      worldDataRef.current = world;
-      setWorldDataLoaded(true);
-    });
+    d3.json(WORLD_TOPO_LOCAL_URL)
+      .catch(() => d3.json(WORLD_TOPO_CDN_URL))
+      .then((world) => {
+        if (world) {
+          worldDataRef.current = world;
+          setWorldDataLoaded(true);
+        }
+      });
   }, []);
 
   // Animate rotation and scale transitions via requestAnimationFrame loop (React-state driven)

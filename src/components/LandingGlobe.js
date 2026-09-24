@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 
-const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+const WORLD_TOPO_LOCAL_URL = '/data/countries-110m.json';
+const WORLD_TOPO_CDN_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
 export default function LandingGlobe({ size = 520 }) {
   const svgRef = useRef(null);
@@ -13,7 +14,8 @@ export default function LandingGlobe({ size = 520 }) {
 
   // Fetch world topology on mount
   useEffect(() => {
-    d3.json(WORLD_TOPO_URL)
+    d3.json(WORLD_TOPO_LOCAL_URL)
+      .catch(() => d3.json(WORLD_TOPO_CDN_URL))
       .then((data) => {
         setWorldData(data);
       })

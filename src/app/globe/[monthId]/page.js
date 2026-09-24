@@ -90,8 +90,14 @@ export default function GlobePage({ params }) {
     if (!node) return;
 
     try {
+      const targetResolution = 3840; // Exact 4K 1:1 square canvas resolution
+      const currentWidth = node.offsetWidth || 1140;
+      const calcPixelRatio = targetResolution / currentWidth;
+
       const blob = await toBlob(node, {
-        pixelRatio: 3.5,
+        pixelRatio: calcPixelRatio,
+        canvasWidth: targetResolution,
+        canvasHeight: targetResolution,
       });
 
       if (blob) {

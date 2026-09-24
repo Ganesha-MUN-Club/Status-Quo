@@ -4,6 +4,7 @@ export const NEWS_SOURCES = [
   { name: "The Associated Press (AP)", domain: "apnews.com" },
   { name: "Agence France-Presse (AFP)", domain: "afp.com" },
   { name: "BBC News", domain: "bbc.co.uk" },
+  { name: "CNN", domain: "cnn.com" },
   { name: "Deutsche Welle (DW)", domain: "dw.com" },
   { name: "Bloomberg News", domain: "bloomberg.com" },
   { name: "Financial Times", domain: "ft.com" },
