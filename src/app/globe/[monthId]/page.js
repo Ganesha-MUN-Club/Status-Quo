@@ -90,14 +90,14 @@ export default function GlobePage({ params }) {
     if (!node) return;
 
     try {
-      const targetResolution = 3840; // Exact 4K 1:1 square canvas resolution
+      const targetResolution = 3840; // Target 4K 1:1 square canvas resolution
       const currentWidth = node.offsetWidth || 1140;
       const calcPixelRatio = targetResolution / currentWidth;
 
       const blob = await toBlob(node, {
         pixelRatio: calcPixelRatio,
-        canvasWidth: targetResolution,
-        canvasHeight: targetResolution,
+        cacheBust: true,
+        imagePlaceholder: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
       });
 
       if (blob) {
