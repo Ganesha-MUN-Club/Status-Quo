@@ -97,6 +97,8 @@ export default function GlobePage({ params }) {
       const blob = await toBlob(node, {
         pixelRatio: calcPixelRatio,
         cacheBust: true,
+        fontEmbedCSS: '',
+        skipFonts: true,
         imagePlaceholder: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
       });
 
