@@ -43,8 +43,8 @@ Here is everything the team can do on the website:
   - **`▼` (Red)**: Signifies deteriorating relationships/friction.
 - **Visual Connectors:** Centroids, leader curves, and border outlines update to visually map these relations.
 
-### 6. Automated Editing Lock (The 5th-of-the-Month Rule)
-- **Edit Windows:** Editions remain editable until the **5th day of the following month** (e.g., June's recap locks on July 5th).
+### 6. Automated Editing Lock (The 15th-of-the-Month Rule)
+- **Edit Windows:** Editions remain editable until the **15th day of the following month** (e.g., September's recap locks on October 16th).
 - **Automatic Read-Only Lock:** Once locked, the workspace switches to a view-only mode for historical archiving:
   - Editing input fields are replaced with read-only summary panels.
   - Country additions, deletions, color customizers, and relationship toggles are hidden.

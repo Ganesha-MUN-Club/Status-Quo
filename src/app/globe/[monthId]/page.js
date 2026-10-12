@@ -19,7 +19,8 @@ export default function GlobePage({ params }) {
   const isLocked = (() => {
     try {
       const [year, month] = decodedMonthId.split('-').map(Number);
-      const lockDate = new Date(year, month, 5);
+      // The globe is open for editing until the 15th of the NEXT month (locks on the 16th)
+      const lockDate = new Date(year, month, 16);
       return new Date() >= lockDate;
     } catch {
       return false;

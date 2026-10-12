@@ -25,8 +25,8 @@ function getMonthLabel(monthId) {
 function isGlobeLocked(monthId) {
   const now = new Date();
   const [year, month] = monthId.split('-').map(Number);
-  // The globe locks on the 5th of the NEXT month
-  const lockDate = new Date(year, month, 5); // month is 0-indexed, so month (1-indexed) = next month
+  // The globe is open for editing until the 15th of the NEXT month (locks on the 16th)
+  const lockDate = new Date(year, month, 16); // month is 0-indexed, so month (1-indexed) = next month
   return now >= lockDate;
 }
 
@@ -79,7 +79,8 @@ export default function LandingPage() {
             monthId: g.monthId || g.month_id,
             locked: isGlobeLocked(g.monthId || g.month_id),
             isCurrent: (g.monthId || g.month_id) === currentMonthId,
-          })).filter(g => (g.monthId || g.month_id) >= '2026-07');
+          })).filter(g => (g.monthId || g.month_id) >= '2026-07')
+             .sort((a, b) => (b.monthId || '').localeCompare(a.monthId || ''));
           setGlobes(enriched);
         } else {
           setGlobes(generateDefaultMonths().filter(g => g.monthId >= '2026-07'));
