@@ -52,4 +52,7 @@ next-env.d.ts
 *.secret.json
 *.key
 
+# IDE
+.vscode/
+
 
