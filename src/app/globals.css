@@ -1150,26 +1150,14 @@ body {
 .callout-dot::after {
   content: '';
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   border: 1px solid currentColor;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 0.5;
-  animation: pulse 2s infinite ease-out;
-}
-
-@keyframes pulse {
-  0% {
-    transform: translate(-50%, -50%) scale(0.6);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.8);
-    opacity: 0;
-  }
+  transform: translate(-50%, -50%);
+  opacity: 0.35;
 }
 
 .globe-land {
@@ -1361,7 +1349,7 @@ body {
   background-color: var(--color-bg); /* #fafafa */
   color: var(--color-dark); /* #111111 */
   min-height: 100vh;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-body);
   overflow-x: hidden;
 }
 
@@ -1375,19 +1363,6 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-.landing-hero-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 700px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.005) 40%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .landing-hero-globe {
@@ -1426,32 +1401,31 @@ body {
 }
 
 .landing-hero-title {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-title);
   font-size: 64px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: var(--color-black); /* #000000 */
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.8);
   margin-bottom: 12px;
   line-height: 1;
 }
 
 .landing-hero-subtitle {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-heading);
   font-size: 16px;
-  font-weight: 300;
-  letter-spacing: 0.06em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
   color: var(--color-grey-600); /* #626262 */
   margin-bottom: 6px;
 }
 
 .landing-hero-org {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-grey-400); /* #9b9b9b */
+  color: var(--color-grey-500);
 }
 
 /* ── Navigation ── */
@@ -1484,10 +1458,10 @@ body {
 }
 
 .landing-nav-brand {
-  font-family: 'Newsreader', serif;
-  font-size: 16px;
+  font-family: var(--font-title);
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--color-dark);
 }
 
@@ -1495,33 +1469,28 @@ body {
 
 .landing-scroll-indicator {
   position: absolute;
-  bottom: 36px;
+  bottom: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   z-index: 5;
   opacity: 0;
   animation: landing-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
 }
 
 .landing-scroll-indicator span {
-  font-size: 11px;
+  font-family: var(--font-heading);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-grey-400);
+  letter-spacing: 0.02em;
+  color: var(--color-grey-500);
 }
 
 .landing-scroll-arrow {
-  font-size: 16px;
-  color: var(--color-grey-500);
-  animation: landing-bounce 2s ease-in-out infinite;
-}
-
-@keyframes landing-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+  font-size: 13px;
+  color: var(--color-grey-400);
+  line-height: 1;
 }
 
 /* ── Editions Section ── */
@@ -1540,18 +1509,19 @@ body {
 }
 
 .landing-editions-header h2 {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-title);
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-black);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   margin-bottom: 8px;
 }
 
 .landing-editions-header p {
+  font-family: var(--font-body);
   font-size: 14px;
-  color: var(--color-grey-500);
-  font-weight: 300;
+  color: var(--color-grey-600);
+  font-weight: 400;
 }
 
 .landing-editions-grid {
@@ -1571,7 +1541,7 @@ body {
   flex-direction: column;
   gap: 14px;
   cursor: pointer;
-  transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
   text-align: left;
   font-family: inherit;
   color: inherit;
@@ -1596,7 +1566,7 @@ body {
 }
 
 .edition-card-month {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-title);
   font-size: 18px;
   font-weight: 600;
   color: var(--color-black);
@@ -1665,13 +1635,13 @@ body {
   background-color: transparent;
   border: 1px dashed var(--color-grey-300);
   border-radius: 12px;
-  color: var(--color-grey-500);
-  font-family: 'Roboto', sans-serif;
+  color: var(--color-grey-600);
+  font-family: var(--font-heading);
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: all 250ms ease;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
 }
 
 .landing-create-btn:hover {

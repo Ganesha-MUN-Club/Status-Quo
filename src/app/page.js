@@ -113,9 +113,6 @@ export default function LandingPage() {
     <div className="landing-root">
       {/* Hero Section */}
       <section className="landing-hero">
-        {/* Ambient glow */}
-        <div className="landing-hero-glow" />
-
         {/* Navigation */}
         <nav className="landing-nav">
           <div className="landing-nav-left">

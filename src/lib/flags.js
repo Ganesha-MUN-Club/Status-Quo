@@ -132,6 +132,7 @@ const ALPHA3_TO_ALPHA2 = {
   "SYR": "sy",
   "ARE": "ae",
   "YEM": "ye",
+  "DZA": "dz",
   "AGO": "ao",
   "BEN": "bj",
   "BFA": "bf",

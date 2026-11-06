@@ -511,7 +511,10 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
       let centroid = COUNTRY_COORDINATES[item.countryCode];
       if (!centroid) {
         const numId = alpha3ToNumeric(item.countryCode);
-        const feature = countries.features.find((f) => String(f.id) === String(numId));
+        const feature = countries.features.find((f) => {
+          if (!numId) return false;
+          return Number(f.id) === Number(numId) || String(f.id) === String(numId);
+        });
         if (feature) {
           centroid = d3.geoCentroid(feature);
         }
@@ -569,7 +572,12 @@ export default function Globe({ region, newsItems, canvasSize = 760, hoveredCoun
         <>
           <div className={`export-boundary-overlay ${boundaryHitState ? 'active' : ''} ${boundaryHitState ? Object.keys(boundaryHitState).filter(k => boundaryHitState[k] === true).map(k => `hit-${k}`).join(' ') : ''}`} />
           <div className={`boundary-warning-badge ${boundaryHitState ? 'show' : ''}`}>
-            <span>⚠️</span> 1:1 Export Boundary Limit
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <path d="M8 1.5L14.5 13.5H1.5L8 1.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+              <path d="M8 6V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="8" cy="11.5" r="0.75" fill="currentColor" />
+            </svg>
+            <span>1:1 Export Boundary Limit</span>
           </div>
         </>
       )}

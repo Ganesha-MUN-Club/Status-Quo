@@ -518,6 +518,10 @@ const COUNTRY_COORDINATES = {
     48,
     15
   ],
+  "DZA": [
+    2.61,
+    28.09
+  ],
   "AGO": [
     18.5,
     -12.5
